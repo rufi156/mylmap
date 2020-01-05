@@ -1,26 +1,51 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react';
+import Table from './Table';
+import Form from './Form';
+import Tree from './Tree';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+    state = {
+        nodes: [
+          {content:'Chicken', is_done:false},
+          {content:'Egg', is_done:true},
+          {content:'yolk', is_done:false},
+          {content:'white', is_done:true},
+          {content:'Fish', is_done:true},
+          {content:'Carp', is_done:true},
+          {content:'Trout', is_done:false},
+        ] };
+
+    removeNode = index => {
+        const { nodes } = this.state;
+
+        this.setState({
+            nodes: nodes.filter((node, i) => {
+                return i !== index;
+            })
+        });
+    }
+
+    handleSubmit = node => {
+        this.setState({nodes: [...this.state.nodes, node]});
+    }
+
+    render() {
+        const { nodes } = this.state;
+
+        return (
+            <div className="container">
+                <h1>LMAP</h1>
+                <p>Add a node with a content and a is_done to the table.</p>
+                <Tree />
+                <Table
+                    nodeData={nodes}
+                    removeNode={this.removeNode}
+                />
+                <h3>Add New</h3>
+                <Form handleSubmit={this.handleSubmit} />
+            </div>
+        );
+    }
 }
 
 export default App;
